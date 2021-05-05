@@ -1,7 +1,6 @@
-size: x y
-cells: x y
-x y
-x y
-x y
-x y
-x y
+300 300
+2 2
+1 2
+2 0
+3 2
+3 1
