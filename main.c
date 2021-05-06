@@ -1,43 +1,48 @@
-#include <SDL2/SDL.h>
- 
-SDL_Window *window = NULL;
-SDL_Surface *surface = NULL;
- 
-//main函数中的参数不能省略，不然会报错
-int main(int args, char *argv[])
+#include"headfile.h"
+SDL_Event event;
+int main(int argc, char* argv[])
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    window = SDL_CreateWindow("SDL2 Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window)
-        return -1;
-    surface = SDL_GetWindowSurface(window);
-    if (!surface)
-        return -2;
- 
-    SDL_Rect rec;
-    rec.x = 700;
-    rec.y = 10,
-    rec.w = 20;
-    rec.h = 20;
- 
-    while (1)
-    {
-        SDL_FillRect(surface, &rec, SDL_MapRGB(surface->format, 180, 10, 140));
- 
-        rec.x += 6;
-        rec.y += 2;
-        rec.x = rec.x > 800 ? 0 : rec.x;
-        rec.y = rec.y > 600 ? 0 : rec.y;
- 
-        SDL_FillRect(surface, &rec, SDL_MapRGB(surface->format, 10, 200, 120));
- 
-        SDL_UpdateWindowSurface(window);
-        SDL_Delay((1.0 / 60) * 1000);
-    }
- 
-    SDL_FreeSurface(surface);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
- 
-    return 0;
+	Uint32 tickspcycle = 100;
+	Uint32 lastup = 0;
+	int Delay = 100;
+	if (readf() == 1) return 0;
+	SDLwindow(row, col);
+	showup();
+	int check = 0;
+	int paused = 0;
+	while (check == 0)
+	{
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) {
+				check = 1; /*the game is over*/
+			}
+			else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+				bool Keydown = event.type == SDL_KEYDOWN;
+				if (event.key.keysym.sym == SDLK_SPACE) {
+					paused = Keydown ^ paused;
+					break;
+				}
+				if (event.key.keysym.sym == SDLK_UP)
+				{
+					if (tickspcycle > 100) tickspcycle -= 50;
+					break;
+				}
+				if (event.key.keysym.sym == SDLK_DOWN)
+				{
+					if (tickspcycle < 5000) tickspcycle += 50;
+					break;
+				}
+			}
+		}
+
+		if (paused == 0&& ((SDL_GetTicks() - lastup)>=tickspcycle))
+		{
+			up_cellstate();
+			showup();
+			lastup = SDL_GetTicks();
+		}
+	}
+	writef();
+	quit();
+	return 0;
 }
