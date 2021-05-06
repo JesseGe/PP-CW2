@@ -10,11 +10,14 @@
 extern int cells[X][Y];
 extern int row;
 extern int col;
+Uint32 tickspcycle;
+char *rfile;
+char *wfile;
 int SDLwindow(int col1, int cow1);
 
-int readf();
+int readf(char*file);
 
-int writef();
+int writef(char*file);
 
 int living_neighbor(int x, int y);
 
@@ -23,3 +26,5 @@ int up_cellstate();
 void showup();
 
 void quit();
+
+int ui();

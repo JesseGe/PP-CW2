@@ -1,9 +1,16 @@
+/*
+This file contains the center moudles in this program. 
+readf is reading the row and column in the first line and next line for delay
+writef is for store the last game imformation
+ui is for recording the load file and the save file and check the run term
+*/
+
 #include"headfile.h"
 
- 
 int row;
 int col;
 int cells[X][Y];
+Uint32 tickspcycle = 100;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Event event;
@@ -28,7 +35,7 @@ int SDLwindow(int col1, int cow1)
 	}
 	return 0;
 }
-int readf()
+int readf(char *file)
 {
 	char acf[128];
 	int y;
@@ -39,7 +46,7 @@ int readf()
 		}
 	}
 	FILE* fp = NULL;
-	fopen_s(&fp, "../file.txt", "r");
+	fopen_s(&fp, file, "r");
 	if(!fp)
 	{
 		fprintf(stderr, "Error when opening file.txt\n");
@@ -52,24 +59,27 @@ int readf()
 	}
 	sscanf(acf, "%d %d", &row, &col);
 	fgets(acf, 128, fp);
+	sscanf(acf, "%d", &tickspcycle);
+	fgets(acf, 128, fp);
 	while(feof(fp) == 0){
 		sscanf(acf, "%d %d", &x, &y);
 		cells[x][y] = 1;
 		fgets(acf, 128, fp);
 	}
-	fclose(fp);  
+	fclose(fp);
 	return 0;
 }
 
-int writef()
+int writef(char *file)
 {
 	FILE* fp = NULL;
-	fopen_s(&fp, "../file.txt", "w");
+	fopen_s(&fp, file, "w+");
 	if (!fp)
 	{
 		return 1;
 	}
 	fprintf(fp, "%d %d\n", row, col);
+	fprintf(fp, "%d\n", tickspcycle);
 	for (int i = 0; i < X; i++)
 	{
 		for (int k = 0; k < Y; k++)
@@ -146,4 +156,21 @@ void quit()
 	if (renderer) SDL_DestroyRenderer(renderer);
 	if (window) SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+
+int ui()
+{
+	rfile = (char*)malloc(sizeof(char));
+	wfile = (char*)malloc(sizeof(char));
+	printf("Please enter your load file.\n");
+	gets(rfile);
+	printf("Please enter your save file.\n");
+	gets(wfile);
+	int steps = 0;
+	if (readf(rfile) == 1) return -1;
+	printf("Please choose the number of steps you want to run\n");
+	scanf("%d", &steps);
+	getchar();
+	return steps;
 }
