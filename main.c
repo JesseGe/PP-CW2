@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	checkreturn = ui();
 	switch (checkreturn)
 	{
-	case -1: return 0;
+	case -1: return 1;
 		break;
 	case 0: SDLwindow(row, col);
 		showup();

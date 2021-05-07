@@ -13,7 +13,7 @@ extern int col;
 Uint32 tickspcycle;
 char *rfile;
 char *wfile;
-int SDLwindow(int col1, int cow1);
+int SDLwindow(int row1, int col1);
 
 int readf(char*file);
 

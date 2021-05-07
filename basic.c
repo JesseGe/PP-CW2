@@ -15,13 +15,18 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Event event;
 
-int SDLwindow(int col1, int cow1)
+int SDLwindow(int row1, int col1)
 {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		return 1;
 	}
-	window = SDL_CreateWindow("Game of Life", 300, 300, cow1+1, col1+1, SDL_WINDOW_SHOWN);
+	if (row1 <= 0 || col1 <= 0)
+	{
+		printf("wrong row or column.\n");
+		return 1;
+	}
+	window = SDL_CreateWindow("Game of Life", 300, 300, row1+1, col1+1, SDL_WINDOW_SHOWN);
 	if (!window)
 	{
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -55,7 +60,7 @@ int readf(char *file)
 	if (fgets(acf, 128, fp) == NULL)
 	{
 		fprintf(stderr, "Error in reading: file.txt\n");
-		return 1;
+		return -1;
 	}
 	sscanf(acf, "%d %d", &row, &col);
 	fgets(acf, 128, fp);
@@ -168,7 +173,7 @@ int ui()
 	printf("Please enter your save file.\n");
 	gets(wfile);
 	int steps = 0;
-	if (readf(rfile) == 1) return -1;
+	if (readf(rfile) == 1||readf(rfile) == -1) return -1;
 	printf("Please choose the number of steps you want to run\n");
 	scanf("%d", &steps);
 	getchar();
